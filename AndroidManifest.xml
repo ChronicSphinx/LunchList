@@ -2,7 +2,7 @@
     package="com.example.lunchlist"
     android:versionCode="1"
     android:versionName="1.0" >
-    <supports-screens
+    <supports-screens            
 			android:largeScreens="true"
 			android:normalScreens="true"
 			android:smallScreens="false"
@@ -23,6 +23,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".DetailForm">            
         </activity>
     </application>
 
