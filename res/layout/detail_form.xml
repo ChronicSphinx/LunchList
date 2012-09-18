@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
@@ -6,11 +5,13 @@ android:stretchColumns="1"
 >
 <TableRow>
 <TextView android:text="Name:" />
-<EditText android:id="@+id/name" />
+<EditText android:id="@+id/name" 
+    android:inputType="text"  />
 </TableRow>
 <TableRow>
 <TextView android:text="Address:" />
-<EditText android:id="@+id/addr" />
+<EditText android:id="@+id/addr" 
+    android:inputType="text" />
 </TableRow>
 <TableRow>
 <TextView android:text="Type:" />
@@ -26,8 +27,6 @@ android:text="Delivery"
 />
 </RadioGroup>
 </TableRow>
-<TableRow>
-<TextView android:text="Notes:" />
 <EditText android:id="@+id/notes"
 android:singleLine="false"
 android:gravity="top"
@@ -35,8 +34,11 @@ android:lines="2"
 android:scrollHorizontally="false"
 android:maxLines="2"
 android:maxWidth="200sp"
+android:hint="Notes"
 />
-</TableRow>
+<EditText android:id="@+id/feed"
+    android:hint="Feed URL"    
+/>
 <Button android:id="@+id/save"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
