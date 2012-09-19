@@ -29,6 +29,7 @@ public class MainActivity extends ListActivity
   EditText address = null;
   RadioGroup types = null;
   EditText notes = null;
+  EditText feed = null;
   Restaurant current = null;
   RestaurantHelper helper;
   SharedPreferences prefs = null;
@@ -200,7 +201,7 @@ public class MainActivity extends ListActivity
             break;
             
         }
-        helper.insert(name.getText().toString(), address.getText().toString(), type, notes.getText().toString());
+        helper.insert(name.getText().toString(), address.getText().toString(), type, notes.getText().toString(),feed.getText().toString() );
         model.requery();
       }
     };

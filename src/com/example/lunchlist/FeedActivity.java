@@ -7,6 +7,7 @@ import org.mcsoxford.rss.RSSReader;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,49 @@ import android.widget.TextView;
 
 public class FeedActivity extends ListActivity 
 {
+	private InstanceState state = null;
+	public static final String FEED_URL="apt.tutorial.FEED_URL";
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) 
+	{		
+		super.onCreate(savedInstanceState);
+		state=(InstanceState)getLastNonConfigurationInstance();
+		if (state==null) 
+		{			
+			state=new InstanceState();
+			state.task=new FeedTask(this);
+			state.task.execute(getIntent().getStringExtra(FEED_URL));
+		}
+		else 
+		{
+			if (state.task!=null) 
+			{
+				state.task.attach(this);
+			}
+			if (state.feed!=null) 
+			{
+				setFeed(state.feed);
+			}
+		}
+	}
+	
+	@Override
+	public Object onRetainNonConfigurationInstance() 
+	{
+		if (state.task!=null) 
+		{
+			state.task.detach();
+		}
+		return(state);
+	}
+	
+	private void setFeed(RSSFeed feed) 
+	{
+		state.feed=feed;
+		setListAdapter(new FeedAdapter(feed));
+	}
+	
 	private void goBlooey(Throwable t) 
 	{
 		AlertDialog.Builder builder=new AlertDialog.Builder(this);
@@ -29,21 +73,25 @@ public class FeedActivity extends ListActivity
 	private class FeedAdapter extends BaseAdapter 
 	{
 		RSSFeed feed=null;
-		FeedAdapter(RSSFeed feed) {
-		super();
-		this.feed=feed;
+		FeedAdapter(RSSFeed feed) 
+		{
+			super();
+			this.feed=feed;
 		}
 		@Override
-		public int getCount() {
-		return(feed.getItems().size());
+		public int getCount() 
+		{
+			return(feed.getItems().size());
 		}
 		@Override
-		public Object getItem(int position) {
-		return(feed.getItems().get(position));
+		public Object getItem(int position) 
+		{
+			return(feed.getItems().get(position));
 		}
 		@Override
-		public long getItemId(int position) {
-		return(position);
+		public long getItemId(int position) 
+		{
+			return(position);
 		}
 		@Override
 		public View getView(int position, View convertView,	ViewGroup parent) 
@@ -52,8 +100,7 @@ public class FeedActivity extends ListActivity
 			if (row==null) 
 			{
 				LayoutInflater inflater=getLayoutInflater();
-				row=inflater.inflate(android.R.layout.simple_list_item_1,
-				parent, false);
+				row=inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
 			}
 			RSSItem item=(RSSItem)getItem(position);
 			((TextView)row).setText(item.getTitle());
@@ -82,8 +129,10 @@ public class FeedActivity extends ListActivity
 		public RSSFeed doInBackground(String... urls) 
 		{
 			RSSFeed result=null;
-			try {
-			result=reader.load(urls[0]);
+			try 
+			{
+				Log.d(FEED_URL, urls[0]);
+				result=reader.load(urls[0]);
 			}
 			catch (Exception e) {
 			this.e=e;
@@ -96,6 +145,14 @@ public class FeedActivity extends ListActivity
 		{
 			if (e==null) 
 			{
+				if(feed != null && feed.getDescription() != null)
+				{
+					Log.d(FEED_URL, feed.getDescription());
+				}
+				else
+				{
+					Log.d(FEED_URL, "Feed is null");
+				}
 				activity.setFeed(feed);
 			}
 			else 
@@ -104,5 +161,11 @@ public class FeedActivity extends ListActivity
 				activity.goBlooey(e);
 			}
 		}
+	}
+	
+	private static class InstanceState 
+	{
+		RSSFeed feed=null;
+		FeedTask task=null;
 	}
 }
