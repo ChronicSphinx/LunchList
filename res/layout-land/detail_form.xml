@@ -51,11 +51,21 @@
 				android:layout_height="wrap_content"
 				android:hint="Feed URL"
 			/>
-			<Button android:id="@+id/save"
-			    android:layout_width="fill_parent"
+			<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			>
+				<TextView android:text="Location:"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="Save"
-			/>
+				/>
+				<TextView android:id="@+id/location"
+				android:text="(not set)"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				/>
+			</LinearLayout>
 		</LinearLayout>
 	</TableRow>
 </TableLayout>
